@@ -15,7 +15,7 @@ jobs:
   ci:
     uses: otfabric/.github/.github/workflows/go-ci.yml@v3.8.0
     with:
-      # otfabric-policy runs in docs.yml, on every pull request and push to main.
+      # The private policy checker requires OTFABRIC_READ_TOKEN.
       run-policy: false
       run-govulncheck: true
       coverage-min: "90"
@@ -23,7 +23,6 @@ jobs:
       codecov-name: go-sunspec
       go-versions: '["1.26", "1.27"]'
       test-exclude-regex: "/example(s)?($|/)"
-    secrets: inherit
 
   # registry/models_gen.go follows models/: a change of either without the
   # other fails. models/ is what sync-models.sh retrieved: a file that differs

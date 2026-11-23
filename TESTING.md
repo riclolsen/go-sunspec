@@ -84,10 +84,13 @@ Goroutine leaks are found by comparing the goroutines with those that existed be
 
 | Event | Workflow | What runs |
 |---|---|---|
-| Pull request | `pr.yml` | `docs.yml` (docsync, otfabric-policy) always; `ci.yml`, `interop.yml` unless every changed file is documentation; then `OT Fabric Required Checks` |
+| Pull request | `pr.yml` | `docs.yml` (docsync) always; `ci.yml`, `interop.yml` unless every changed file is documentation; then `OT Fabric Required Checks` |
 | Push to a branch | none | nothing; dispatch `ci.yml`, `interop.yml` to test a branch without a pull request |
 | Push to `main` | `docs.yml` | the light checks; the merged commit was tested as the pull request's merge commit |
 | Schedule | `interop.yml`, `models-check.yml`, `nightly.yml` | the scheduled runs, on `main`: interop daily, model drift weekly, and every night each fuzz target for 5 minutes (a failing input is uploaded as an artifact) and the tests as 386 binaries |
 | Release | `release.yml` | the release workflow tests the release commit again |
 
 Documentation means an added or modified `*.md` file outside `.github/`, `testdata/` and `vendor/`, other than `AGENTS.md` and `CLAUDE.md`, and other than `API.md`, which code reads. A deleted or renamed document, or any other file, runs everything. `OT Fabric Required Checks` fails unless every job that applies succeeded; its summary lists them.
+
+The Go and documentation workflows run with public dependencies. The private
+`otfabric-policy` job is disabled because it requires `OTFABRIC_READ_TOKEN`.
