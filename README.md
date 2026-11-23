@@ -610,14 +610,14 @@ not been verified, is in [LIMITATIONS.md](LIMITATIONS.md).
 ## Requirements
 
 - Go 1.26+
-- [riclolsen/go-modbus v1.21.1](https://github.com/riclolsen/go-modbus/tree/v1.21.1) for builds from this repository. Import `github.com/otfabric/go-modbus`, the module path declared by the fork.
+- [riclolsen/go-modbus v1.24.1](https://github.com/riclolsen/go-modbus/tree/v1.24.1) for builds from this repository. Import `github.com/otfabric/go-modbus`, the module path declared by the fork.
 
 Go applies this repository's `replace` directive when go-sunspec is the main
 module. To use `go-sunspec/secevent` in an application, add this replacement
 to the application's `go.mod` before fetching or importing the package:
 
 ```text
-replace github.com/otfabric/go-modbus => github.com/riclolsen/go-modbus v1.21.1
+replace github.com/otfabric/go-modbus => github.com/riclolsen/go-modbus v1.24.1
 ```
 
 Without a replacement in the main module or workspace, Go resolves the upstream

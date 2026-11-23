@@ -12,4 +12,4 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 )
 
-replace github.com/otfabric/go-modbus => github.com/riclolsen/go-modbus v1.21.1
+replace github.com/otfabric/go-modbus => github.com/riclolsen/go-modbus v1.24.1
