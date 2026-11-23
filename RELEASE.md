@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Builds of this repository use [riclolsen/go-modbus v1.21.1](https://github.com/riclolsen/go-modbus/tree/v1.21.1) through a Go module replacement. The Modbus import path stays `github.com/otfabric/go-modbus`. Applications can select the fork with the same replacement in their main module. See [Requirements](README.md#requirements).
+- Builds of this repository use [riclolsen/go-modbus v1.24.1](https://github.com/riclolsen/go-modbus/tree/v1.24.1) through a Go module replacement. The Modbus import path stays `github.com/otfabric/go-modbus`. Applications can select the fork with the same replacement in their main module. See [Requirements](README.md#requirements).
 
 ---
 

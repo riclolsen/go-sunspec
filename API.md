@@ -202,7 +202,7 @@ type ModelResult struct {
 when they are adjacent in the chain, as `Discovery.Models` are: adjacent
 instances share a request up to 125 registers, and no register outside them is
 read. It plans the requests with the go-modbus
-[`batch`](https://github.com/riclolsen/go-modbus/blob/v1.21.1/API.md#12-batch-reads-package-batch)
+[`batch`](https://github.com/riclolsen/go-modbus/blob/v1.24.1/API.md#12-batch-reads-package-batch)
 package. Each request includes the headers of the instances it serves, and
 each header is checked as `ReadModel` checks it. An instance with `Length` of
 123 or less is never split across requests, so its values and scale factors
@@ -576,7 +576,7 @@ servers stop. Read counters from that dispatcher with `Stats()`, or use
 An `OnWrite` callback can call `secevent.PeerFromContext(ctx)` and
 `secevent.Report(ctx, event)` with the context it receives from the server.
 Keep register values and write payloads out of event detail. For event kinds,
-queue limits, and sink behavior, see the [go-modbus security events reference](https://github.com/riclolsen/go-modbus/blob/v1.21.1/API.md#14-security-events-package-secevent).
+queue limits, and sink behavior, see the [go-modbus security events reference](https://github.com/riclolsen/go-modbus/blob/v1.24.1/API.md#14-security-events-package-secevent).
 
 ## Device files
 

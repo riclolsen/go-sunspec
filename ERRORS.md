@@ -2,7 +2,7 @@
 
 Canonical guide to how go-sunspec reports failures.
 For method signatures, see [API.md](API.md). Transport and Modbus protocol errors
-originate in [go-modbus](https://github.com/riclolsen/go-modbus/tree/v1.21.1); this package wraps
+originate in [go-modbus](https://github.com/riclolsen/go-modbus/tree/v1.24.1); this package wraps
 or re-exports the ones that matter at the SunSpec layer.
 
 ## Quick reference
