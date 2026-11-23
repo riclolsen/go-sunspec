@@ -9,4 +9,5 @@ Generated from the source of `github.com/otfabric/go-sunspec` with `docsync api`
 | [github.com/otfabric/go-sunspec](go-sunspec.md) | Package sunspec reads, writes and serves SunSpec devices over Modbus. |
 | [github.com/otfabric/go-sunspec/devicefile](devicefile.md) | Package devicefile reads and writes device files: JSON documents that describe a SunSpec device by its models and their point values. |
 | [github.com/otfabric/go-sunspec/registry](registry.md) | Package registry holds compiled SunSpec model schemas and lookup helpers. |
+| [github.com/otfabric/go-sunspec/secevent](secevent.md) | Package secevent exposes the go-modbus security event API for SunSpec servers. |
 | [github.com/otfabric/go-sunspec/testutil](testutil.md) | Package testutil provides an in-process SunSpec Modbus TCP fixture for tests: a register map builder, a read-only request handler serving it, and a helper that starts a server with a connected client. |

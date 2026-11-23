@@ -888,7 +888,7 @@ Serve listens as conf says and serves the device until ctx is done, then shuts t
 	<-ctx.Done()
 	err = ms.Shutdown(...)
 
-and the one place where this package opens a listener; use those calls directly to control the lifecycle yourself. conf.URL selects the transport (go-modbus serves "tcp://host:port" and "tcp+tls://host:port"); conf also carries the idle timeout, client limit, TLS material, logger and metrics.
+and the one place where this package opens a listener; use those calls directly to control the lifecycle yourself. conf.URL selects the transport (go-modbus serves "tcp://host:port" and "tcp+tls://host:port"); conf also carries the idle timeout, client limit, TLS material, logger and metrics. To receive security events with a compatible go-modbus version, configure conf.Security using the go-sunspec/secevent package.
 
 Serve returns the go-modbus error when conf is invalid or the address cannot be listened on, and the shutdown error when connections do not end within five seconds: one matching context.DeadlineExceeded, when a request is still being served then (an OnWrite that does not return, say). Serve does not wait for that request.
 

@@ -1,5 +1,17 @@
 # go-sunspec Releases
 
+## Unreleased
+
+### Added
+
+- Public `github.com/otfabric/go-sunspec/secevent` exposes go-modbus security events, configuration, dispatchers, sinks and reporting helpers for SunSpec servers. Using the package requires the fork pin in the application's main module. See [Security events](API.md#security-events).
+
+### Changed
+
+- Builds of this repository use [riclolsen/go-modbus v1.21.1](https://github.com/riclolsen/go-modbus/tree/v1.21.1) through a Go module replacement. The Modbus import path stays `github.com/otfabric/go-modbus`. Applications can select the fork with the same replacement in their main module. See [Requirements](README.md#requirements).
+
+---
+
 ## v0.12.2
 
 **Date:** 2026-11-16
