@@ -28,13 +28,11 @@ jobs:
       contents: read
       id-token: write
     uses: ./.github/workflows/ci.yml
-    secrets: inherit
 
   docs:
     permissions:
       contents: read
     uses: ./.github/workflows/docs.yml
-    secrets: inherit
 
   interop:
     needs: changes
