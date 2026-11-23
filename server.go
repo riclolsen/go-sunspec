@@ -732,6 +732,8 @@ var serveShutdownTimeout = 5 * time.Second
 // directly to control the lifecycle yourself. conf.URL selects the transport
 // (go-modbus serves "tcp://host:port" and "tcp+tls://host:port"); conf also
 // carries the idle timeout, client limit, TLS material, logger and metrics.
+// To receive security events with a compatible go-modbus version, configure
+// conf.Security using the go-sunspec/secevent package.
 //
 // Serve returns the go-modbus error when conf is invalid or the address
 // cannot be listened on, and the shutdown error when connections do not end

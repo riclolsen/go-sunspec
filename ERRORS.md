@@ -2,7 +2,7 @@
 
 Canonical guide to how go-sunspec reports failures.
 For method signatures, see [API.md](API.md). Transport and Modbus protocol errors
-originate in [go-modbus](https://github.com/otfabric/go-modbus); this package wraps
+originate in [go-modbus](https://github.com/riclolsen/go-modbus/tree/v1.21.1); this package wraps
 or re-exports the ones that matter at the SunSpec layer.
 
 ## Quick reference
@@ -139,6 +139,12 @@ A `Server` reports problems to Modbus clients as exceptions, not as Go errors:
 | Write refused by `ServerOptions.OnWrite` | The error it returned; server device failure (4) when that is not a Modbus exception |
 | Write whose model changed while `ServerOptions.OnWrite` ran (another client write, an update) | 4, server device failure; nothing changes (since v0.11.0). The client may send the write again |
 | `ServerOptions.OnWrite` does not return normally, behind a go-modbus server | 4, server device failure (go-modbus v1.17.0 recovers it and logs it); nothing changes |
+
+### Security event configuration
+
+`secevent.NewDispatcher` returns `secevent.ErrNoSink` for a missing sink.
+An invalid `modbus.ServerConfig.Security` policy passed to `Server.Serve`
+surfaces as a go-modbus error matching `modbus.ErrConfigurationError`.
 
 ## Device files
 

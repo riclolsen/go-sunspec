@@ -9,7 +9,7 @@
 
 **go-sunspec is a Go library for reading, writing and serving SunSpec devices over Modbus.** It discovers the SunSpec models a solar inverter, energy meter, battery or other DER device exposes, reads them over Modbus TCP, RTU or ASCII, decodes every point into typed, scaled values with units, and writes control points by name — using the official [SunSpec Alliance](https://sunspec.org/) model definitions compiled into your program. The same definitions work the other way: build a device from models and point values and [serve it](#serving-a-device) over Modbus TCP or Modbus TCP with TLS, as a simulator or as the SunSpec interface of your own equipment.
 
-Use it to build solar monitoring, energy-management (EMS), data-logging, DER-integration and device-simulation software in Go, or use [`sunspecctl`](https://github.com/otfabric/sunspecctl), the command-line tool built on it, to inspect or simulate a device from the terminal. It is pure Go with no CGO, built on [otfabric/go-modbus](https://github.com/otfabric/go-modbus).
+Use it to build solar monitoring, energy-management (EMS), data-logging, DER-integration and device-simulation software in Go, or use [`sunspecctl`](https://github.com/otfabric/sunspecctl), the command-line tool built on it, to inspect or simulate a device from the terminal. It is pure Go with no CGO, built on [the riclolsen fork of go-modbus](https://github.com/riclolsen/go-modbus).
 
 **Quick links:** [Quick start](#quick-start) · [Install](#install) · [Supported models](#supported-sunspec-models) · [Library API](#api) · [Serving a device](#serving-a-device) · [`sunspecctl` CLI](#command-line-tool) · [FAQ](#faq) · [API reference](API.md)
 
@@ -319,7 +319,7 @@ w := dm.Point("W") // first point with that name anywhere in the model, or nil
 
 ### Serial (RTU) and other transports
 
-go-sunspec reads through a [go-modbus](https://github.com/otfabric/go-modbus) client, so every transport that library supports works unchanged — only the client configuration differs:
+go-sunspec reads through a [go-modbus](https://github.com/riclolsen/go-modbus) client, so every transport that library supports works unchanged — only the client configuration differs:
 
 ```go
 // SunSpec over Modbus RTU on RS-485
@@ -417,6 +417,10 @@ err = srv.SetPoint(1, "W", 4350) // model at index 1 of the chain
 ```
 
 `srv.Serve(ctx, &modbus.ServerConfig{...})` does the `NewServer` / `Start` / wait / `Shutdown` sequence in one call when you do not need the Modbus server yourself. The go-modbus server listens on `tcp://` or, with a server certificate and client CAs in the `ServerConfig`, `tcp+tls://` (Modbus/TCP Security).
+
+To receive structured Modbus security events, import `github.com/otfabric/go-sunspec/secevent`
+and set `modbus.ServerConfig.Security`. The [security events example](API.md#security-events)
+shows how to stream events as JSON lines.
 
 - **Values** — A point takes its engineering value; the encoder divides by 10^scale factor and rounds to the nearest integer, halves away from zero. The scale factor is the value you give for the `sunssf` point. A point you do not set is served as "not implemented". A value that does not fit its type after scaling is an error (`ErrValueOutOfRange`), never wrapped or clamped.
 - **Groups** — `Values.Add("module", ...)` adds an instance of a repeating group; count points such as `NPt` are filled in from the number of instances. Nested groups nest.
@@ -606,7 +610,18 @@ not been verified, is in [LIMITATIONS.md](LIMITATIONS.md).
 ## Requirements
 
 - Go 1.26+
-- [otfabric/go-modbus](https://github.com/otfabric/go-modbus) v1.17.0+
+- [riclolsen/go-modbus v1.21.1](https://github.com/riclolsen/go-modbus/tree/v1.21.1) for builds from this repository. Import `github.com/otfabric/go-modbus`, the module path declared by the fork.
+
+Go applies this repository's `replace` directive when go-sunspec is the main
+module. To use `go-sunspec/secevent` in an application, add this replacement
+to the application's `go.mod` before fetching or importing the package:
+
+```text
+replace github.com/otfabric/go-modbus => github.com/riclolsen/go-modbus v1.21.1
+```
+
+Without a replacement in the main module or workspace, Go resolves the upstream
+module at v1.17.0 or a higher version selected by the application's dependencies.
 
 The tests of package `devicefile` validate files against its JSON Schema with [santhosh-tekuri/jsonschema](https://github.com/santhosh-tekuri/jsonschema) v6. It is a test dependency only: programs that import go-sunspec do not build it.
 

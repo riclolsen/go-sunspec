@@ -36,6 +36,7 @@ What go-sunspec does not do, and what has not been verified. For the API contrac
 - `ServerOptions.OnWrite` judges a write before it takes effect, without the `Server`'s lock held. When the model changes while it runs, the write is refused with exception 4: `OnWrite` has then seen a write that did not take effect, and is not told. An `OnWrite` that acts on what it sees (forwards it, records it) has to allow for that.
 - The function given to `Update` can be called more than once for one update, so it cannot count calls or do something that must happen once.
 - `Serve` gives connections five seconds to end when its context is done. A request still being served then (an `OnWrite` that does not return) is not waited for: `Serve` returns an error matching `context.DeadlineExceeded`, and that request's goroutine ends when the callback returns.
+- Automatic security events cover the connection and protocol observations in the selected go-modbus version. Applications can report SunSpec-specific observations from `OnWrite` with `secevent.Report`. See [Security events](API.md#security-events).
 - Modbus has no authentication of its own: see [SECURITY.md](SECURITY.md).
 
 ## Memory

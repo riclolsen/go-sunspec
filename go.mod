@@ -11,3 +11,5 @@ require (
 	github.com/otfabric/go-serial v0.5.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )
+
+replace github.com/otfabric/go-modbus => github.com/riclolsen/go-modbus v1.21.1

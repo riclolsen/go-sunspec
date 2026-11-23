@@ -6,6 +6,10 @@ Public API of `github.com/otfabric/go-sunspec` (package `sunspec`),
 
 Errors: [ERRORS.md](ERRORS.md). Release notes: [RELEASE.md](RELEASE.md).
 
+Import Modbus types from `github.com/otfabric/go-modbus`, the module path
+declared by the fork. See [Requirements](README.md#requirements) to select
+the same fork in an application build.
+
 ## Ownership and lifecycle
 
 | Object | Owner | Notes |
@@ -198,7 +202,7 @@ type ModelResult struct {
 when they are adjacent in the chain, as `Discovery.Models` are: adjacent
 instances share a request up to 125 registers, and no register outside them is
 read. It plans the requests with the go-modbus
-[`batch`](https://github.com/otfabric/go-modbus/blob/main/API.md#12-batch-reads-package-batch)
+[`batch`](https://github.com/riclolsen/go-modbus/blob/v1.21.1/API.md#12-batch-reads-package-batch)
 package. Each request includes the headers of the instances it serves, and
 each header is checked as `ReadModel` checks it. An instance with `Length` of
 123 or less is never split across requests, so its values and scale factors
@@ -533,6 +537,46 @@ convenience that starts such a server, waits for `ctx` and shuts it down
 served after those five seconds (an `OnWrite` that does not return, say),
 `Serve` returns an error matching `context.DeadlineExceeded` and does not wait
 for it: the listener and the connections are closed by then.
+
+### Security events
+
+Import `github.com/otfabric/go-sunspec/secevent` after selecting the fork in
+your application's [go.mod](README.md#requirements). The package exposes the
+go-modbus event types, kind catalogue, dispatchers, sinks and reporting helpers.
+Use `secevent.SecurityPolicy` with `modbus.ServerConfig.Security` for either
+`Server.Serve` or `modbus.NewServer`.
+
+```go
+package main
+
+import (
+    "context"
+    "io"
+
+    "github.com/otfabric/go-modbus"
+    "github.com/otfabric/go-sunspec"
+    "github.com/otfabric/go-sunspec/secevent"
+)
+
+func serveWithEvents(ctx context.Context, srv *sunspec.Server, out io.Writer) error {
+    return srv.Serve(ctx, &modbus.ServerConfig{
+        URL: "tcp://127.0.0.1:1502",
+        Security: &secevent.SecurityPolicy{
+            Policy: secevent.Policy{Sink: secevent.NewJSONLinesSink(out)},
+        },
+    })
+}
+```
+
+When the policy specifies a `Sink`, go-modbus owns the dispatcher for that server run.
+When it supplies a `Dispatcher`, the caller can share it and closes it after its
+servers stop. Read counters from that dispatcher with `Stats()`, or use
+`SecurityStats()` when you own the `*modbus.Server`.
+
+An `OnWrite` callback can call `secevent.PeerFromContext(ctx)` and
+`secevent.Report(ctx, event)` with the context it receives from the server.
+Keep register values and write payloads out of event detail. For event kinds,
+queue limits, and sink behavior, see the [go-modbus security events reference](https://github.com/riclolsen/go-modbus/blob/v1.21.1/API.md#14-security-events-package-secevent).
 
 ## Device files
 
